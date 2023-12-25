@@ -1,22 +1,28 @@
 class Solution {
     public int majorityElement(int[] nums) {
+        int candidate = 0;
+        int count = 0;
 
-            int n=nums.length;
-            Map<Integer, Integer> map = new HashMap<>();
-
-            for(int i =0; i<n; i++){
-                map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
+                count = 1;
+            } else if (candidate == num) {
+                count++;
+            } else {
+                count--;
             }
+        }
 
-            for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
-                if(entry.getValue() > n/2) {
-                    return entry.getKey();
-                }
+        // At this point, 'candidate' is a potential majority element
+        // Verify if it appears more than n/2 times (no need for a separate loop)
+        count = 0;
+        for (int num : nums) {
+            if (num == candidate) {
+                count++;
             }
-            return 0;
-                }
-            }
+        }
 
-
-
-      
+        return (count > nums.length / 2) ? candidate : 0;
+    }
+}
