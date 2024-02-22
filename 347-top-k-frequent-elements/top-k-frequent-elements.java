@@ -1,22 +1,23 @@
+import java.util.*;
+
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        Map<Integer,Integer>map=new HashMap<>();
-        for(int i:nums)
-        {
-            if(map.containsKey(i))
-            {
-                map.put(i,map.get(i)+1);
-            }
-            else{
-                map.put(i,1);
-            }
+        // Step 1: Count the frequency of each element using a HashMap
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int num : nums) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
         }
-        List<Integer>list=new ArrayList<>(map.keySet());
-        list.sort((a, b) -> map.get(b) - map.get(a));
-        int res[] = new int[k];
-        for (int i = 0; i < k; ++i)
-            res[i] = list.get(i);
-        return res;
 
+        // Step 2: Use a PriorityQueue to efficiently get the top k frequent elements
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> frequencyMap.get(b) - frequencyMap.get(a));
+        pq.addAll(frequencyMap.keySet());
+
+        // Step 3: Build the result array with the top k frequent elements
+        int[] result = new int[k];
+        for (int i = 0; i < k; i++) {
+            result[i] = pq.poll();
+        }
+
+        return result;
     }
 }
